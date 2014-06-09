@@ -21,9 +21,7 @@ var Queue = require( 'nbqueue' )
 fs.readdir( directory, function ( err, files )
 	{
 		// set maxProcesses to 100
-		var queue = new Queue( 100 ),
-
-			data = {}
+		var queue = new Queue( 100 )
 
 		files.forEach( function ( file )
 			{
@@ -31,15 +29,7 @@ fs.readdir( directory, function ( err, files )
 					{
 						fs.readFile( file, function ( err, data )
 							{
-								if ( err )
-								{
-									return next( err )
-								}
-
-								// ... do something ...
-								data[ file ] = data
-
-								next()
+								next( err, data )
 							}
 						)
 					}
@@ -47,7 +37,7 @@ fs.readdir( directory, function ( err, files )
 			}
 		)
 
-		queue.done( function ( err )
+		queue.done( function ( err, results )
 			{
 				if ( err )
 				{
@@ -55,8 +45,8 @@ fs.readdir( directory, function ( err, files )
 					console.log( err )
 				}
 
-				// data is fully populated with filenames and contents
-				console.log( data )
+				// results contains an array of the results passed to next()
+				console.log( results )
 			}
 		)
 	}
