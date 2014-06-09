@@ -35,6 +35,9 @@ fs.readdir( directory, function ( err, files )
 								next( err, data )
 							}
 						)
+
+						// because next takes the same arguments as the readFile callback, you could do
+						// fs.readFile( file, next )
 					}
 				)
 			}
