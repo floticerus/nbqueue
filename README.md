@@ -38,6 +38,8 @@ fs.readdir( directory, function ( err, files )
 
 								// ... do something ...
 								data[ file ] = data
+
+								next()
 							}
 						)
 					}
