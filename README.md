@@ -1,7 +1,7 @@
 nbqueue
 =======
 
-super simple queue module for executing async functions in node.js
+super simple queue module for executing async functions in node.js. nbqueue was created as a module for [nodebee](//github.com/kvonflotow/nodebee/), a pure javascript database.
 
 ## uses
 
