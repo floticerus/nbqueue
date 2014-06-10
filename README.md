@@ -10,7 +10,7 @@ super simple queue module for executing async functions in node.js. nbqueue was 
 
 #### limiting the number of functions being executed
 
-when accessing large amounts of files asynchronously, bad things can happen. for example, take a directory with 20,000 files in it and try accessing them all at once. good luck!
+when accessing large amounts of files asynchronously, bad things can happen. for example, take a directory with 20,000 files in it and try accessing them all at once.
 
 with nbqueue you can set the maxProcesses to a sane amount, like 100, and it will execute a maximum of 100 functions at a time. functions added after the limit has been reached will execute as the previous functions finish up.
 
