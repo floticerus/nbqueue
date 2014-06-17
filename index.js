@@ -22,7 +22,7 @@
         {
             this.processes--
 
-            typeof err !== 'undefined' && this.errors.push( err )
+            err && this.errors.push( err )
 
             typeof result !== 'undefined' && this.results.push( result )
 
