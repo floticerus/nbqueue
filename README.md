@@ -62,3 +62,89 @@ fs.readdir( directory, function ( err, files )
 #### executing async functions in order
 
 setting maxProcesses to 1 will ensure only 1 function can be executed at a time.
+
+#### queues within queues
+
+queue up multiple sets of async functions, and let a the master queue know when they're all finished. here's a not very useful example:
+
+```javascript
+var masterQueue = new Queue()
+
+masterQueue.add( function ( nextMaster )
+	{
+		FS.readdir( '/path/to/directory1', function ( err, files )
+			{
+				if ( err )
+				{
+					return nextMaster( err )
+				}
+
+				var queue1 = new Queue( 50 )
+
+				files.forEach( function ( file )
+					{
+						queue1.add( function ( next )
+							{
+								// do some other stuff here
+
+								next( null, file )
+							}
+						)
+					}
+				)
+
+				queue1.done( function ( err, results )
+					{
+						nextMaster( err, results )
+					}
+				)
+			}
+		)
+	}
+)
+
+masterQueue.add( function ( nextMaster )
+	{
+		FS.readdir( '/path/to/directory2', function ( err, files )
+			{
+				if ( err )
+				{
+					return nextMaster( err )
+				}
+
+				var queue2 = new Queue( 50 )
+
+				files.forEach( function ( file )
+					{
+						queue2.add( function ( next )
+							{
+								// do some other stuff here
+
+								next( null, file )
+							}
+						)
+					}
+				)
+
+				queue2.done( function ( err, results )
+					{
+						nextMaster( err, results )
+					}
+				)
+			}
+		)
+	}
+)
+
+masterQueue.done( function ( err, results )
+	{
+		if ( err )
+		{
+			return console.log( err )
+		}
+
+		// results contains the filenames from both directories
+		console.log( results )
+	}
+)
+```
