@@ -72,6 +72,8 @@
             this.queue.push( fn )
 
             processQueue.call( this )
+
+            return this
         }
 
         Queue.prototype.done = function ( fn )
